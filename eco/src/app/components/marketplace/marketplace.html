@@ -1,0 +1,491 @@
+<!-- Stats Banner -->
+<section class="stats-banner">
+  <div class="container">
+    <div class="stats-grid">
+      <div class="stat-item">
+        <div class="stat-number">{{ stats.totalUsers }}</div>
+        <div class="stat-label">Usuarios Activos</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-number">{{ stats.activeExchanges }}</div>
+        <div class="stat-label">Intercambios Activos</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-number">{{ stats.co2Saved }}</div>
+        <div class="stat-label">CO₂ Ahorrado</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-number">{{ stats.itemsExchanged }}</div>
+        <div class="stat-label">Objetos Intercambiados</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Main Marketplace -->
+<section class="marketplace-section">
+  <div class="container">
+    <!-- Navigation Tabs -->
+    <div class="marketplace-header">
+      <div class="tabs-container">
+        <div class="tabs">
+          <button
+            *ngFor="let tab of tabs"
+            [class]="'tab-button ' + (activeTab === tab.id ? 'active' : '')"
+            (click)="setActiveTab(tab.id)"
+          >
+            {{ tab.label }}
+            <span class="tab-count">{{ tab.count }}</span>
+          </button>
+        </div>
+      </div>
+
+      <div class="header-actions">
+        <button class="btn btn-secondary" (click)="onCalculateImpact()">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect x="3" y="3" width="18" height="18" rx="2" stroke="currentColor" stroke-width="2"/>
+            <path d="M9 9h6v6H9V9z" stroke="currentColor" stroke-width="2"/>
+          </svg>
+          Calculadora de Impacto
+        </button>
+
+        <div class="view-toggle">
+          <button
+            [class]="'view-btn ' + (viewMode === 'grid' ? 'active' : '')"
+            (click)="setViewMode('grid')"
+            title="Vista de cuadrícula"
+          >
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <rect x="3" y="3" width="7" height="7" stroke="currentColor" stroke-width="2"/>
+              <rect x="14" y="3" width="7" height="7" stroke="currentColor" stroke-width="2"/>
+              <rect x="14" y="14" width="7" height="7" stroke="currentColor" stroke-width="2"/>
+              <rect x="3" y="14" width="7" height="7" stroke="currentColor" stroke-width="2"/>
+            </svg>
+          </button>
+          <button
+            [class]="'view-btn ' + (viewMode === 'list' ? 'active' : '')"
+            (click)="setViewMode('list')"
+            title="Vista de lista"
+          >
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <line x1="8" y1="6" x2="21" y2="6" stroke="currentColor" stroke-width="2"/>
+              <line x1="8" y1="12" x2="21" y2="12" stroke="currentColor" stroke-width="2"/>
+              <line x1="8" y1="18" x2="21" y2="18" stroke="currentColor" stroke-width="2"/>
+              <line x1="3" y1="6" x2="3.01" y2="6" stroke="currentColor" stroke-width="2"/>
+              <line x1="3" y1="12" x2="3.01" y2="12" stroke="currentColor" stroke-width="2"/>
+              <line x1="3" y1="18" x2="3.01" y2="18" stroke="currentColor" stroke-width="2"/>
+            </svg>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="marketplace-content">
+      <!-- Sidebar -->
+      <aside class="sidebar">
+        <!-- Categories -->
+        <div class="sidebar-section">
+          <h3 class="sidebar-title">Categorías</h3>
+          <div class="category-list">
+            <button
+              *ngFor="let category of categories"
+              [class]="'category-item ' + (selectedCategory === category.id ? 'active' : '')"
+              (click)="setCategory(category.id)"
+            >
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" *ngIf="category.icon === 'grid'">
+                <rect x="3" y="3" width="7" height="7" stroke="currentColor" stroke-width="2"/>
+                <rect x="14" y="3" width="7" height="7" stroke="currentColor" stroke-width="2"/>
+                <rect x="14" y="14" width="7" height="7" stroke="currentColor" stroke-width="2"/>
+                <rect x="3" y="14" width="7" height="7" stroke="currentColor" stroke-width="2"/>
+              </svg>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" *ngIf="category.icon === 'smartphone'">
+                <rect x="5" y="2" width="14" height="20" rx="2" ry="2" stroke="currentColor" stroke-width="2"/>
+                <line x1="12" y1="18" x2="12.01" y2="18" stroke="currentColor" stroke-width="2"/>
+              </svg>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" *ngIf="category.icon === 'home'">
+                <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" stroke="currentColor" stroke-width="2"/>
+                <polyline points="9,22 9,12 15,12 15,22" stroke="currentColor" stroke-width="2"/>
+              </svg>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" *ngIf="category.icon === 'book'">
+                <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20" stroke="currentColor" stroke-width="2"/>
+                <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z" stroke="currentColor" stroke-width="2"/>
+              </svg>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" *ngIf="category.icon === 'users'">
+                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" stroke="currentColor" stroke-width="2"/>
+                <circle cx="9" cy="7" r="4" stroke="currentColor" stroke-width="2"/>
+                <path d="m22 21-3-3" stroke="currentColor" stroke-width="2"/>
+              </svg>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" *ngIf="category.icon === 'star'">
+                <polygon points="12,2 15.09,8.26 22,9 17,14.74 18.18,21.02 12,17.77 5.82,21.02 7,14.74 2,9 8.91,8.26" stroke="currentColor" stroke-width="2" fill="none"/>
+              </svg>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" *ngIf="category.icon === 'activity'">
+                <polyline points="22,12 18,12 15,21 9,3 6,12 2,12" stroke="currentColor" stroke-width="2"/>
+              </svg>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" *ngIf="category.icon === 'music'">
+                <path d="M9 18V5l12-2v13" stroke="currentColor" stroke-width="2"/>
+                <circle cx="6" cy="18" r="3" stroke="currentColor" stroke-width="2"/>
+                <circle cx="18" cy="16" r="3" stroke="currentColor" stroke-width="2"/>
+              </svg>
+              
+              <span class="category-name">{{ category.name }}</span>
+              <span class="category-count">{{ category.count }}</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- User Impact -->
+        <div class="sidebar-section">
+          <h3 class="sidebar-title">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <circle cx="12" cy="8" r="7" stroke="currentColor" stroke-width="2"/>
+              <polyline points="8.21,13.89 7,23 12,20 17,23 15.79,13.88" stroke="currentColor" stroke-width="2"/>
+            </svg>
+            Tu Impacto
+          </h3>
+          <div class="impact-tracker">
+            <div class="impact-stat">
+              <div class="impact-number">{{ userStats.ecoPoints }}</div>
+              <div class="impact-label">Puntos Eco</div>
+            </div>
+            <div class="impact-level">
+              <div class="level-name">{{ userStats.level }}</div>
+              <div class="level-progress">
+                <div class="progress-bar" style="width: 75%"></div>
+              </div>
+            </div>
+            <div class="impact-details">
+              <div class="detail-item">
+                <span class="detail-label">CO₂ Ahorrado:</span>
+                <span class="detail-value">{{ userStats.co2Saved }}</span>
+              </div>
+              <div class="detail-item">
+                <span class="detail-label">Intercambios:</span>
+                <span class="detail-value">{{ userStats.exchangesCompleted }}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Quick Actions -->
+        <div class="sidebar-section">
+          <h3 class="sidebar-title">Acciones Rápidas</h3>
+          <div class="quick-actions">
+            <button class="quick-action-btn">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" stroke="currentColor" stroke-width="2"/>
+              </svg>
+              Mis Favoritos
+            </button>
+            <button class="quick-action-btn">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2"/>
+                <polyline points="12,6 12,12 16,14" stroke="currentColor" stroke-width="2"/>
+              </svg>
+              Mis Intercambios
+            </button>
+            <button class="quick-action-btn">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="12" cy="10" r="3" stroke="currentColor" stroke-width="2"/>
+                <path d="m21 21-6-6m6 6v-4.5a3.5 3.5 0 0 0-7 0v4.5" stroke="currentColor" stroke-width="2"/>
+              </svg>
+              Cerca de mí
+            </button>
+          </div>
+        </div>
+      </aside>
+
+      <!-- Main Content -->
+      <main class="main-content">
+        <!-- Filters and Results Header -->
+        <div class="content-header">
+          <div class="results-info">
+            <h2 class="results-title">
+              <ng-container *ngIf="!isLoading">
+                {{ filteredItems.length }}
+                {{ activeTab === 'todos' ? 'elementos' : activeTab }}
+                disponibles
+              </ng-container>
+              <ng-container *ngIf="isLoading">
+                Buscando...
+              </ng-container>
+            </h2>
+          </div>
+
+          <div class="content-actions">
+            <!-- Search -->
+            <div class="search-container">
+              <svg class="search-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="11" cy="11" r="8" stroke="currentColor" stroke-width="2"/>
+                <path d="21 21l-4.35-4.35" stroke="currentColor" stroke-width="2"/>
+              </svg>
+              <input
+                type="text"
+                [(ngModel)]="searchQuery"
+                (keyup)="onSearch()"
+                placeholder="Buscar en el marketplace..."
+                class="search-input"
+              >
+            </div>
+
+            <!-- Sort Filter -->
+            <div class="filter-container">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <polygon points="22,3 2,3 10,12.46 10,19 14,21 14,12.46" stroke="currentColor" stroke-width="2" fill="none"/>
+              </svg>
+              <select [(ngModel)]="sortBy" (change)="setSortBy(sortBy)" class="sort-select">
+                <option *ngFor="let option of sortOptions" [value]="option.value">
+                  {{ option.label }}
+                </option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <!-- Loading State -->
+        <div *ngIf="isLoading" class="loading-state">
+          <div class="loading-spinner"></div>
+          <p>Cargando elementos...</p>
+        </div>
+
+        <!-- Items Grid/List -->
+        <div *ngIf="!isLoading && filteredItems.length > 0" 
+             [class]="'items-container ' + viewMode + '-view'">
+          
+          <!-- Grid View -->
+          <div *ngIf="viewMode === 'grid'" class="items-grid">
+            <div *ngFor="let item of filteredItems" class="item-card">
+              <div class="item-image-container">
+                <img [src]="item.image" [alt]="item.title" class="item-image">
+                <div class="item-badges">
+                  <div class="eco-badge">
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M12 2a10 10 0 0 0-10 10c0 6 4 8 4 8s-4-2-4-8a10 10 0 0 1 10-10Z" fill="currentColor"/>
+                    </svg>
+                    {{ item.ecoPoints }}
+                  </div>
+                  <div class="type-badge" [class]="'type-' + item.type">
+                    {{ item.type }}
+                  </div>
+                </div>
+                <div class="item-impact">{{ item.impact }}</div>
+              </div>
+
+              <div class="item-content">
+                <div class="item-header">
+                  <h3 class="item-title">{{ item.title }}</h3>
+                  <div class="item-rating">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                      <polygon points="12,2 15.09,8.26 22,9 17,14.74 18.18,21.02 12,17.77 5.82,21.02 7,14.74 2,9 8.91,8.26"/>
+                    </svg>
+                    {{ item.rating }}
+                  </div>
+                </div>
+
+                <p class="item-description">{{ item.description }}</p>
+
+                <div class="item-meta">
+                  <div class="item-location">
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" stroke="currentColor" stroke-width="2"/>
+                      <circle cx="12" cy="10" r="3" stroke="currentColor" stroke-width="2"/>
+                    </svg>
+                    {{ item.location }} • {{ item.distance }}
+                  </div>
+                  <div class="item-owner">
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" stroke="currentColor" stroke-width="2"/>
+                      <circle cx="12" cy="7" r="4" stroke="currentColor" stroke-width="2"/>
+                    </svg>
+                    {{ item.owner }}
+                  </div>
+                </div>
+
+                <div class="item-tags">
+                  <span *ngFor="let tag of item.tags" class="tag">{{ tag }}</span>
+                </div>
+
+                <div class="item-wants">
+                  <span class="wants-label">Busca:</span>
+                  <span class="wants-value">{{ item.wants }}</span>
+                </div>
+
+                <div class="item-actions">
+                  <button class="btn-favorite" (click)="onFavorite(item)" title="Agregar a favoritos">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" stroke="currentColor" stroke-width="2"/>
+                    </svg>
+                  </button>
+                  <button class="btn btn-outline" (click)="onContactOwner(item)">
+                    Contactar
+                  </button>
+                  <button class="btn btn-primary" (click)="onExchange(item)">
+                    Intercambiar
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- List View -->
+          <div *ngIf="viewMode === 'list'" class="items-list">
+            <div *ngFor="let item of filteredItems" class="list-item">
+              <div class="list-item-image">
+                <img [src]="item.image" [alt]="item.title">
+                <div class="eco-badge">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M12 2a10 10 0 0 0-10 10c0 6 4 8 4 8s-4-2-4-8a10 10 0 0 1 10-10Z" fill="currentColor"/>
+                  </svg>
+                  {{ item.ecoPoints }}
+                </div>
+              </div>
+
+              <div class="list-item-content">
+                <div class="list-item-header">
+                  <h3 class="list-item-title">{{ item.title }}</h3>
+                  <div class="list-item-meta">
+                    <span class="item-type" [class]="'type-' + item.type">{{ item.type }}</span>
+                    <div class="item-rating">
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                        <polygon points="12,2 15.09,8.26 22,9 17,14.74 18.18,21.02 12,17.77 5.82,21.02 7,14.74 2,9 8.91,8.26"/>
+                      </svg>
+                      {{ item.rating }}
+                    </div>
+                  </div>
+                </div>
+
+                <p class="list-item-description">{{ item.description }}</p>
+
+                <div class="list-item-details">
+                  <div class="detail-row">
+                    <div class="detail-item">
+                      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" stroke="currentColor" stroke-width="2"/>
+                        <circle cx="12" cy="7" r="4" stroke="currentColor" stroke-width="2"/>
+                      </svg>
+                      <span>{{ item.owner }}</span>
+                    </div>
+                    <div class="detail-item">
+                      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" stroke="currentColor" stroke-width="2"/>
+                        <circle cx="12" cy="10" r="3" stroke="currentColor" stroke-width="2"/>
+                      </svg>
+                      <span>{{ item.location }} • {{ item.distance }}</span>
+                    </div>
+                    <div class="detail-item impact">
+                      <span>{{ item.impact }}</span>
+                    </div>
+                  </div>
+                  
+                  <div class="detail-row">
+                    <div class="wants-info">
+                      <span class="wants-label">Busca:</span>
+                      <span class="wants-value">{{ item.wants }}</span>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="list-item-tags">
+                  <span *ngFor="let tag of item.tags" class="tag">{{ tag }}</span>
+                </div>
+              </div>
+
+              <div class="list-item-actions">
+                <button class="btn-favorite" (click)="onFavorite(item)" title="Agregar a favoritos">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" stroke="currentColor" stroke-width="2"/>
+                  </svg>
+                </button>
+                <button class="btn btn-outline" (click)="onContactOwner(item)">
+                  Contactar
+                </button>
+                <button class="btn btn-primary" (click)="onExchange(item)">
+                  Intercambiar
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Empty State -->
+        <div *ngIf="!isLoading && filteredItems.length === 0" class="empty-state">
+          <div class="empty-illustration">
+            <svg width="64" height="64" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <circle cx="11" cy="11" r="8" stroke="currentColor" stroke-width="2"/>
+              <path d="21 21l-4.35-4.35" stroke="currentColor" stroke-width="2"/>
+            </svg>
+          </div>
+          <h3 class="empty-title">No se encontraron resultados</h3>
+          <p class="empty-description">
+            Intenta ajustar tus filtros o buscar otros términos.
+          </p>
+          <button class="btn btn-primary" (click)="onPublishItem()">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M12 5v14m-7-7h14" stroke="currentColor" stroke-width="2"/>
+            </svg>
+            Publicar elemento
+          </button>
+        </div>
+
+        <!-- Load More -->
+        <div *ngIf="!isLoading && filteredItems.length > 0" class="load-more-section">
+          <button class="btn btn-secondary btn-large">
+            Cargar más resultados
+          </button>
+        </div>
+      </main>
+    </div>
+  </div>
+</section>
+
+<!-- Community Impact Section -->
+<section class="community-impact">
+  <div class="container">
+    <div class="impact-header">
+      <h2 class="section-title">Impacto de la Comunidad</h2>
+      <p class="section-subtitle">
+        Juntos estamos transformando Zamora en una ciudad más sostenible
+      </p>
+    </div>
+
+    <div class="impact-cards">
+      <div class="impact-card green">
+        <div class="impact-icon">
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M12 2L13.09 8.26L22 9L13.09 9.74L12 16L10.91 9.74L2 9L10.91 8.26L12 2Z" fill="currentColor"/>
+          </svg>
+        </div>
+        <h3 class="impact-title">Economía Circular</h3>
+        <p class="impact-description">
+          Reduciendo residuos sólidos a través del intercambio inteligente
+        </p>
+      </div>
+
+      <div class="impact-card blue">
+        <div class="impact-icon">
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" stroke="currentColor" stroke-width="2"/>
+            <circle cx="9" cy="7" r="4" stroke="currentColor" stroke-width="2"/>
+            <path d="m22 21-3-3" stroke="currentColor" stroke-width="2"/>
+          </svg>
+        </div>
+        <h3 class="impact-title">Comunidad Activa</h3>
+        <p class="impact-description">
+          Conectando vecinos para crear vínculos más fuertes
+        </p>
+      </div>
+
+      <div class="impact-card purple">
+        <div class="impact-icon">
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M12 2a10 10 0 0 0-10 10c0 6 4 8 4 8s-4-2-4-8a10 10 0 0 1 10-10Z" stroke="currentColor" stroke-width="2"/>
+            <path d="M12 2a10 10 0 0 1 10 10c0 6-4 8-4 8s4-2 4-8a10 10 0 0 0-10-10Z" stroke="currentColor" stroke-width="2"/>
+          </svg>
+        </div>
+        <h3 class="impact-title">Impacto Ambiental</h3>
+        <p class="impact-description">
+          Midiendo y celebrando cada acción sostenible
+        </p>
+      </div>
+    </div>
+  </div>
+</section>

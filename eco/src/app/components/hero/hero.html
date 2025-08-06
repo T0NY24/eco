@@ -1,0 +1,233 @@
+<!-- Hero Section -->
+<section class="hero-section">
+  <div class="container">
+    <div class="hero-content">
+      <div class="hero-text">
+        <h1 class="hero-title">
+          Transforma Loja con 
+          <span class="text-gradient">Intercambio Circular</span>
+        </h1>
+        <p class="hero-subtitle">
+          Únete a la revolución del intercambio sostenible. Conecta con tu comunidad, 
+          intercambia objetos, servicios y habilidades mientras reduces tu huella ambiental.
+        </p>
+        <div class="hero-actions">
+          <button class="btn btn-primary btn-large" (click)="startExchanging()" routerLink="/marketplace">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M12 2L2 7L12 12L22 7L12 2Z" fill="currentColor"/>
+              <path d="M2 17L12 22L22 17" stroke="currentColor" stroke-width="2" fill="none"/>
+            </svg>
+            Comenzar a Intercambiar
+          </button>
+          <button class="btn btn-outline btn-large" (click)="learnMore()">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2"/>
+              <path d="M9 12l2 2 4-4" stroke="currentColor" stroke-width="2"/>
+            </svg>
+            Conocer Más
+          </button>
+        </div>
+      </div>
+      <div class="hero-visual">
+        <div class="floating-cards">
+          <div class="floating-card card-1">
+            <div class="card-icon green">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12 2L13.09 8.26L22 9L13.09 9.74L12 16L10.91 9.74L2 9L10.91 8.26L12 2Z" fill="currentColor"/>
+              </svg>
+            </div>
+            <div class="card-content">
+              <h4>Laptop Dell</h4>
+              <p>Por bicicleta</p>
+            </div>
+          </div>
+          <div class="floating-card card-2">
+            <div class="card-icon blue">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" stroke="currentColor" stroke-width="2"/>
+                <circle cx="9" cy="7" r="4" stroke="currentColor" stroke-width="2"/>
+                <path d="m22 21-3-3" stroke="currentColor" stroke-width="2"/>
+              </svg>
+            </div>
+            <div class="card-content">
+              <h4>Clases de Guitarra</h4>
+              <p>Por jardinería</p>
+            </div>
+          </div>
+          <div class="floating-card card-3">
+            <div class="card-icon purple">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20" stroke="currentColor" stroke-width="2"/>
+                <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z" stroke="currentColor" stroke-width="2"/>
+              </svg>
+            </div>
+            <div class="card-content">
+              <h4>Libros Técnicos</h4>
+              <p>Por plantas</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Stats Section -->
+<section class="stats-section">
+  <div class="container">
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div class="stat-number">{{ stats.totalUsers }}</div>
+        <div class="stat-label">Usuarios Activos</div>
+        <div class="stat-description">Vecinos intercambiando</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-number">{{ stats.activeExchanges }}</div>
+        <div class="stat-label">Intercambios Activos</div>
+        <div class="stat-description">En proceso ahora</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-number">{{ stats.co2Saved }}</div>
+        <div class="stat-label">CO₂ Ahorrado</div>
+        <div class="stat-description">Este año</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-number">{{ stats.itemsExchanged }}</div>
+        <div class="stat-label">Objetos Intercambiados</div>
+        <div class="stat-description">Total histórico</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Features Section -->
+<section class="features-section">
+  <div class="container">
+    <div class="section-header">
+      <h2 class="section-title">¿Por qué EcoIntercambio?</h2>
+      <p class="section-subtitle">
+        Descubre cómo nuestra plataforma está transformando la manera en que 
+        las comunidades comparten recursos y conocimientos
+      </p>
+    </div>
+    
+    <div class="features-grid">
+      <div *ngFor="let feature of features" class="feature-card" [class]="'feature-' + feature.color">
+        <div class="feature-icon" [class]="feature.color">
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" *ngIf="feature.icon === 'recycle'">
+            <path d="M12 2L13.09 8.26L22 9L13.09 9.74L12 16L10.91 9.74L2 9L10.91 8.26L12 2Z" fill="currentColor"/>
+          </svg>
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" *ngIf="feature.icon === 'users'">
+            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" stroke="currentColor" stroke-width="2"/>
+            <circle cx="9" cy="7" r="4" stroke="currentColor" stroke-width="2"/>
+            <path d="m22 21-3-3" stroke="currentColor" stroke-width="2"/>
+          </svg>
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" *ngIf="feature.icon === 'leaf'">
+            <path d="M12 2a10 10 0 0 0-10 10c0 6 4 8 4 8s-4-2-4-8a10 10 0 0 1 10-10Z" stroke="currentColor" stroke-width="2"/>
+            <path d="M12 2a10 10 0 0 1 10 10c0 6-4 8-4 8s4-2 4-8a10 10 0 0 0-10-10Z" stroke="currentColor" stroke-width="2"/>
+          </svg>
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" *ngIf="feature.icon === 'award'">
+            <circle cx="12" cy="8" r="7" stroke="currentColor" stroke-width="2"/>
+            <polyline points="8.21,13.89 7,23 12,20 17,23 15.79,13.88" stroke="currentColor" stroke-width="2"/>
+          </svg>
+        </div>
+        <h3 class="feature-title">{{ feature.title }}</h3>
+        <p class="feature-description">{{ feature.description }}</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Recent Activity Section -->
+<section class="activity-section">
+  <div class="container">
+    <div class="activity-content">
+      <div class="activity-header">
+        <h2 class="section-title">Actividad Reciente</h2>
+        <p class="section-subtitle">
+          Mira lo que está sucediendo en tu comunidad
+        </p>
+      </div>
+      
+      <div class="activity-list">
+        <div *ngFor="let activity of recentActivities" class="activity-item">
+          <div class="activity-icon" [class]="activity.type">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" *ngIf="activity.type === 'exchange'">
+              <path d="M12 2L13.09 8.26L22 9L13.09 9.74L12 16L10.91 9.74L2 9L10.91 8.26L12 2Z" fill="currentColor"/>
+            </svg>
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" *ngIf="activity.type === 'service'">
+              <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z" stroke="currentColor" stroke-width="2"/>
+            </svg>
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" *ngIf="activity.type === 'skill'">
+              <path d="M9 12l2 2 4-4" stroke="currentColor" stroke-width="2"/>
+              <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2"/>
+            </svg>
+          </div>
+          <div class="activity-content">
+            <div class="activity-text">
+              <span class="activity-user">{{ activity.user }}</span>
+              {{ activity.action }}
+            </div>
+            <div class="activity-meta">
+              <span class="activity-time">{{ activity.time }}</span>
+              <span class="activity-impact">{{ activity.impact }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Testimonials Section -->
+<section class="testimonials-section">
+  <div class="container">
+    <div class="section-header">
+      <h2 class="section-title">Lo que dice nuestra comunidad</h2>
+      <p class="section-subtitle">
+        Historias reales de vecinos que han transformado su forma de consumir
+      </p>
+    </div>
+    
+    <div class="testimonials-grid">
+      <div *ngFor="let testimonial of testimonials" class="testimonial-card">
+        <div class="testimonial-content">
+          <p class="testimonial-text">"{{ testimonial.content }}"</p>
+        </div>
+        <div class="testimonial-author">
+          <img [src]="testimonial.avatar" [alt]="testimonial.name" class="author-avatar">
+          <div class="author-info">
+            <h4 class="author-name">{{ testimonial.name }}</h4>
+            <p class="author-role">{{ testimonial.role }}</p>
+            <div class="author-points">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12 2L13.09 8.26L22 9L13.09 9.74L12 16L10.91 9.74L2 9L10.91 8.26L12 2Z" fill="currentColor"/>
+              </svg>
+              {{ testimonial.ecoPoints }} eco-puntos
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA Section -->
+<section class="cta-section">
+  <div class="container">
+    <div class="cta-content">
+      <h2 class="cta-title">¿Listo para comenzar tu primera intercambio?</h2>
+      <p class="cta-subtitle">
+        Únete a miles de vecinos que ya están creando una Zamora más sostenible
+      </p>
+      <div class="cta-actions">
+        <button class="btn btn-primary btn-large" routerLink="/marketplace">
+          Explorar Marketplace
+        </button>
+        <button class="btn btn-secondary btn-large">
+          Calcular mi Impacto
+        </button>
+      </div>
+    </div>
+  </div>
+</section>
