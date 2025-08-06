@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
-import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
+import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
 @Component({
@@ -11,35 +11,32 @@ import { FormsModule } from '@angular/forms';
   styleUrls: ['./header.scss']
 })
 export class HeaderComponent {
-  searchQuery = '';
   isMenuOpen = false;
+  searchQuery = '';
   
+  isAuthenticated = false; // Luego lo conectaremos a Firebase Auth.
+
+  userStats = {
+    ecoPoints: 120,
+    avatar: 'https://via.placeholder.com/40',
+    level: 'Lv.5'
+  };
+
   navigationItems = [
     { label: 'Inicio', route: '/', active: true },
     { label: 'Marketplace', route: '/marketplace', active: false },
-    { label: 'Mis Intercambios', route: '/exchanges', active: false },
-    { label: 'Comunidad', route: '/community', active: false }
+    { label: 'Servicios', route: '/marketplace/servicios', active: false }
   ];
-
-  userStats = {
-    ecoPoints: 1250,
-    level: 'Eco Warrior',
-    avatar: '/assets/images/default-avatar.svg'
-  };
 
   toggleMenu() {
     this.isMenuOpen = !this.isMenuOpen;
   }
 
   onSearch() {
-    if (this.searchQuery.trim()) {
-      console.log('Searching for:', this.searchQuery);
-      // Aquí implementarías la lógica de búsqueda
-    }
+    console.log('Buscando:', this.searchQuery);
   }
 
   onPublish() {
-    console.log('Opening publish dialog');
-    // Aquí implementarías la lógica para publicar nuevo item
+    console.log('Publicar nuevo objeto');
   }
 }

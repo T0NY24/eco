@@ -4,10 +4,7 @@
       <!-- Logo -->
       <div class="logo" routerLink="/">
         <div class="logo-icon">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M12 2L13.09 8.26L22 9L13.09 9.74L12 16L10.91 9.74L2 9L10.91 8.26L12 2Z" fill="currentColor"/>
-            <path d="M12 8L13.09 10.26L16 11L13.09 11.74L12 14L10.91 11.74L8 11L10.91 10.26L12 8Z" fill="currentColor"/>
-          </svg>
+          <!-- SVG Icon -->
         </div>
         <h1 class="logo-text">EcoIntercambio</h1>
       </div>
@@ -15,10 +12,7 @@
       <!-- Search Bar -->
       <div class="search-container">
         <div class="search-input-wrapper">
-          <svg class="search-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <circle cx="11" cy="11" r="8" stroke="currentColor" stroke-width="2"/>
-            <path d="21 21l-4.35-4.35" stroke="currentColor" stroke-width="2"/>
-          </svg>
+          <!-- SVG Search Icon -->
           <input
             type="text"
             [(ngModel)]="searchQuery"
@@ -45,37 +39,35 @@
 
       <!-- User Actions -->
       <div class="user-actions">
-        <!-- Eco Points -->
-        <div class="eco-points">
-          <div class="eco-icon">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M12 2L2 7L12 12L22 7L12 2Z" fill="currentColor"/>
-              <path d="M2 17L12 22L22 17" stroke="currentColor" stroke-width="2" fill="none"/>
-              <path d="M2 12L12 17L22 12" stroke="currentColor" stroke-width="2" fill="none"/>
-            </svg>
+        <ng-container *ngIf="isAuthenticated; else guestActions">
+          <!-- Eco Points -->
+          <div class="eco-points">
+            <div class="eco-icon">
+              <!-- SVG Icon -->
+            </div>
+            <span class="eco-points-text">{{ userStats.ecoPoints }}</span>
           </div>
-          <span class="eco-points-text">{{ userStats.ecoPoints }}</span>
-        </div>
 
-        <!-- Publish Button -->
-        <button class="btn btn-primary" (click)="onPublish()">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M12 5v14m-7-7h14" stroke="currentColor" stroke-width="2"/>
-          </svg>
-          Publicar
-        </button>
+          <!-- Publish Button -->
+          <button class="btn btn-primary" (click)="onPublish()">
+            Publicar
+          </button>
 
-        <!-- User Avatar -->
-        <div class="user-avatar">
-          <img [src]="userStats.avatar" [alt]="userStats.level" class="avatar-image">
-          <div class="user-level">{{ userStats.level }}</div>
-        </div>
+          <!-- User Avatar -->
+          <div class="user-avatar">
+            <img [src]="userStats.avatar" [alt]="userStats.level" class="avatar-image">
+            <div class="user-level">{{ userStats.level }}</div>
+          </div>
+        </ng-container>
+
+        <ng-template #guestActions>
+          <button class="btn btn-outline" routerLink="/auth" (click)="toggleMenu()">Iniciar Sesión</button>
+          <button class="btn btn-primary" routerLink="/auth" (click)="toggleMenu()">Registrarse</button>
+        </ng-template>
 
         <!-- Mobile Menu Toggle -->
         <button class="mobile-menu-toggle" (click)="toggleMenu()">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M3 12h18m-9-9v18" stroke="currentColor" stroke-width="2"/>
-          </svg>
+          <!-- SVG Icon -->
         </button>
       </div>
     </div>

@@ -11,6 +11,6 @@ import { FooterComponent } from './components/footer/footer';
   templateUrl: './app.html',
   styleUrls: ['./app.scss']
 })
-export class AppComponent {  // Asegúrate de que se llame AppComponent
+export class AppComponent {
   title = 'EcoIntercambio';
 }
