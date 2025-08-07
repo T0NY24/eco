@@ -1,4 +1,11 @@
-<div class="publish-form">
+<div class="publish-invite" *ngIf="!isPublishing">
+  <h2>¿Tienes un producto, servicio o habilidad para ofrecer?</h2>
+  <p>Publica y gana eco-puntos intercambiando con la comunidad. ¡Ayuda al planeta y recibe lo que necesitas!</p>
+  <button (click)="isPublishing = true">Publicar Producto/Servicio</button>
+</div>
+
+<!-- FORMULARIO DE PUBLICACIÓN -->
+<div class="publish-form" *ngIf="isPublishing">
   <h2>Publicar Nuevo Producto</h2>
   <input type="text" placeholder="Título" [(ngModel)]="newItem.title">
   <input type="text" placeholder="Dueño" [(ngModel)]="newItem.owner">
@@ -19,8 +26,10 @@
   </select>
 
   <button (click)="addItem()">Publicar</button>
+  <button (click)="isPublishing = false">Cancelar</button>
 </div>
 
+<!-- LISTADO DE PRODUCTOS -->
 <div class="marketplace-items">
   <div *ngFor="let item of items$ | async" class="item-card">
     <h3>{{ item.title }}</h3>

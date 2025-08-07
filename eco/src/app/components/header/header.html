@@ -3,86 +3,30 @@
     <div class="header-content">
       <!-- Logo -->
       <div class="logo" routerLink="/">
-        <div class="logo-icon">
-          <!-- SVG Icon -->
-        </div>
         <h1 class="logo-text">EcoIntercambio</h1>
       </div>
 
-      <!-- Search Bar -->
-      <div class="search-container">
-        <div class="search-input-wrapper">
-          <!-- SVG Search Icon -->
-          <input
-            type="text"
-            [(ngModel)]="searchQuery"
-            (keyup.enter)="onSearch()"
-            placeholder="Buscar objetos, servicios, habilidades..."
-            class="search-input"
-          >
-        </div>
-      </div>
-
-      <!-- Desktop Navigation -->
+      <!-- Navegación -->
       <nav class="desktop-nav">
         <ul class="nav-list">
-          <li *ngFor="let item of navigationItems" class="nav-item">
-            <a [routerLink]="item.route" 
-               class="nav-link" 
-               [class.active]="item.active"
-               routerLinkActive="active">
-              {{ item.label }}
-            </a>
-          </li>
+          <li><a routerLink="/">Inicio</a></li>
+          <li><a routerLink="/marketplace">Marketplace</a></li>
+          <li><a routerLink="/comunidad">Comunidad</a></li> <!-- Botón Comunidad -->
         </ul>
       </nav>
 
-      <!-- User Actions -->
-      <div class="user-actions">
-        <ng-container *ngIf="isAuthenticated; else guestActions">
-          <!-- Eco Points -->
-          <div class="eco-points">
-            <div class="eco-icon">
-              <!-- SVG Icon -->
-            </div>
-            <span class="eco-points-text">{{ userStats.ecoPoints }}</span>
-          </div>
-
-          <!-- Publish Button -->
-          <button class="btn btn-primary" (click)="onPublish()">
-            Publicar
-          </button>
-
-          <!-- User Avatar -->
-          <div class="user-avatar">
-            <img [src]="userStats.avatar" [alt]="userStats.level" class="avatar-image">
-            <div class="user-level">{{ userStats.level }}</div>
-          </div>
+      <!-- User Section -->
+      <div class="user-section">
+        <ng-container *ngIf="authService.currentUser; else guestLinks">
+          <span class="welcome-text">
+            Bienvenido, {{ authService.currentUser.email }}
+          </span>
+          <button (click)="logout()" class="btn btn-logout">Cerrar Sesión</button>
         </ng-container>
-
-        <ng-template #guestActions>
-          <button class="btn btn-outline" routerLink="/auth" (click)="toggleMenu()">Iniciar Sesión</button>
-          <button class="btn btn-primary" routerLink="/auth" (click)="toggleMenu()">Registrarse</button>
+        <ng-template #guestLinks>
+          <a routerLink="/auth" class="btn btn-login">Iniciar Sesión</a>
         </ng-template>
-
-        <!-- Mobile Menu Toggle -->
-        <button class="mobile-menu-toggle" (click)="toggleMenu()">
-          <!-- SVG Icon -->
-        </button>
       </div>
     </div>
-
-    <!-- Mobile Navigation -->
-    <nav class="mobile-nav" [class.open]="isMenuOpen">
-      <ul class="mobile-nav-list">
-        <li *ngFor="let item of navigationItems" class="mobile-nav-item">
-          <a [routerLink]="item.route" 
-             class="mobile-nav-link"
-             (click)="toggleMenu()">
-            {{ item.label }}
-          </a>
-        </li>
-      </ul>
-    </nav>
   </div>
 </header>

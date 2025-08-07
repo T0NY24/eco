@@ -1,0 +1,59 @@
+.community-section {
+  padding: 2rem;
+  text-align: center;
+
+  .publish-btn {
+    margin: 1rem 0;
+    padding: 0.5rem 1.5rem;
+    font-weight: bold;
+    cursor: pointer;
+  }
+
+  .new-post-form {
+    margin: 1rem 0;
+    textarea {
+      width: 100%;
+      height: 100px;
+      padding: 0.5rem;
+      margin-bottom: 0.5rem;
+    }
+  }
+
+  .posts-container {
+    margin-top: 2rem;
+    .post-card {
+      border: 1px solid #ccc;
+      padding: 1rem;
+      margin-bottom: 1rem;
+      text-align: left;
+
+      .post-header {
+        font-size: 0.9rem;
+        color: #555;
+        margin-bottom: 0.5rem;
+      }
+
+      .post-message {
+        margin-bottom: 1rem;
+        font-size: 1rem;
+      }
+
+      .responses {
+        background: #f9f9f9;
+        padding: 0.5rem;
+        .response {
+          margin-bottom: 0.5rem;
+        }
+
+        .reply-form {
+          display: flex;
+          gap: 0.5rem;
+          input {
+            flex: 1;
+            padding: 0.3rem;
+          }
+        }
+      }
+    }
+  }
+}

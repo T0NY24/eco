@@ -1,0 +1,37 @@
+<section class="community-section">
+  <h2>¿Tienes ideas, preguntas o algo que compartir con la comunidad?</h2>
+  <p>Publica aquí y conversa con otros miembros de EcoIntercambio. ¡La colaboración es el corazón de nuestra comunidad!</p>
+  <button (click)="publishMode = true" class="publish-btn">Hacer tu publicación</button>
+
+  <!-- Publicar Nuevo Post -->
+  <div *ngIf="publishMode" class="new-post-form">
+    <textarea [(ngModel)]="newPost" placeholder="Escribe tu mensaje aquí..."></textarea>
+    <button (click)="publishPost()">Publicar</button>
+  </div>
+
+  <!-- Lista de Publicaciones -->
+  <div class="posts-container">
+    <div class="post-card" *ngFor="let post of posts$ | async">
+      <div class="post-header">
+        <strong>{{ post.user }}</strong> — <span>{{ post.createdAt.toDate().toLocaleString() }}</span>
+      </div>
+      <div class="post-message">
+        {{ post.message }}
+      </div>
+      
+      <!-- Responder -->
+      <div class="responses">
+        <div class="response" *ngFor="let response of post.responses">
+          <strong>{{ response.user }}:</strong> {{ response.message }}
+        </div>
+
+        <div *ngIf="replyingToPostId === post.id" class="reply-form">
+          <input [(ngModel)]="replyMessage" placeholder="Escribe tu respuesta...">
+          <button (click)="submitReply(post)">Responder</button>
+        </div>
+        
+        <button (click)="startReply(post.id!)" *ngIf="replyingToPostId !== post.id">Responder</button>
+      </div>
+    </div>
+  </div>
+</section>

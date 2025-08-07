@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { RouterOutlet } from '@angular/router';
 import { HeaderComponent } from './components/header/header';
 import { FooterComponent } from './components/footer/footer';
+import { AuthService } from './services/auth.service';
 
 @Component({
   selector: 'app-root',
@@ -12,5 +13,6 @@ import { FooterComponent } from './components/footer/footer';
   styleUrls: ['./app.scss']
 })
 export class AppComponent {
+  constructor(public authService: AuthService) {}
   title = 'EcoIntercambio';
 }

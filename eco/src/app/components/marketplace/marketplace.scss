@@ -1,27 +1,46 @@
-.publish-form {
-  margin-bottom: 20px;
-  input, textarea, select {
-    display: block;
+.publish-invite {
+  text-align: center;
+  margin: 40px 0;
+  h2 {
+    font-size: 24px;
     margin-bottom: 10px;
-    padding: 8px;
-    width: 100%;
-    max-width: 400px;
+  }
+  p {
+    font-size: 16px;
+    color: #555;
+    margin-bottom: 20px;
   }
   button {
-    padding: 10px 20px;
+    padding: 12px 24px;
+    font-size: 16px;
     cursor: pointer;
   }
 }
 
-.marketplace-items {
+.publish-form {
+  margin: 20px auto;
+  max-width: 500px;
   display: flex;
-  flex-wrap: wrap;
-  gap: 20px;
+  flex-direction: column;
+  gap: 10px;
+  input, textarea, select {
+    padding: 10px;
+    font-size: 16px;
+  }
+  button {
+    padding: 10px;
+    font-size: 16px;
+  }
 }
 
-.item-card {
-  border: 1px solid #ddd;
-  padding: 15px;
-  width: calc(33.333% - 20px);
-  box-sizing: border-box;
+.marketplace-items {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 20px;
+  .item-card {
+    border: 1px solid #ccc;
+    padding: 15px;
+    border-radius: 8px;
+    background: #f9f9f9;
+  }
 }

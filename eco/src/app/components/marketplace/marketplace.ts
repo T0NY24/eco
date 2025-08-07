@@ -1,19 +1,18 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
-import { Firestore, collection, addDoc, collectionData } from '@angular/fire/firestore';
+import { Firestore, collection, collectionData, addDoc } from '@angular/fire/firestore';
 import { Observable } from 'rxjs';
 
 export interface MarketplaceItem {
-  id: string;
+  id?: string;
   title: string;
   category: string;
   type: 'objeto' | 'servicio' | 'tiempo';
   owner: string;
   location: string;
-  description: string;
   ecoPoints: number;
+  description: string;
   createdAt: Date;
 }
 
@@ -26,6 +25,8 @@ export interface MarketplaceItem {
 })
 export class MarketplaceComponent implements OnInit {
   items$: Observable<MarketplaceItem[]>;
+  isPublishing: boolean = false;
+
   newItem: Partial<MarketplaceItem> = {};
 
   categories = [
@@ -35,10 +36,10 @@ export class MarketplaceComponent implements OnInit {
     { id: 'servicios', name: 'Servicios' },
     { id: 'habilidades', name: 'Habilidades' },
     { id: 'deportes', name: 'Deportes' },
-    { id: 'musica', name: 'Música' }
+    { id: 'musica', name: 'Música' },
   ];
 
-  constructor(private firestore: Firestore, private route: ActivatedRoute) {
+  constructor(private firestore: Firestore) {
     const productsCollection = collection(this.firestore, 'productos');
     this.items$ = collectionData(productsCollection, { idField: 'id' }) as Observable<MarketplaceItem[]>;
   }
@@ -59,6 +60,7 @@ export class MarketplaceComponent implements OnInit {
       createdAt: new Date()
     });
 
-    this.newItem = {}; // Reset form
+    this.newItem = {};
+    this.isPublishing = false;
   }
 }
