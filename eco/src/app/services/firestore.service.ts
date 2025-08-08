@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Firestore, collection, collectionData, addDoc } from '@angular/fire/firestore';
 import { Observable } from 'rxjs';
-import { MarketplaceItem } from '../components/marketplace/marketplace';
+import { MarketplaceItem } from '../marketplace/marketplace';
 
 @Injectable({ providedIn: 'root' })
 export class FirestoreService {

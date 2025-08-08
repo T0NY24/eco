@@ -1,0 +1,33 @@
+<div *ngIf="productoDestino">
+  <h2>Intercambio con: {{ productoDestino.title }}</h2>
+  <p>{{ productoDestino.description }}</p>
+  <p>Categoría: {{ productoDestino.category }}</p>
+  <p>Tipo: {{ productoDestino.type }}</p>
+  <p>EcoPuntos: {{ productoDestino.ecoPoints }}</p>
+  <p>Ubicación: {{ productoDestino.location }}</p>
+  <p>Dueño: {{ productoDestino.owner }}</p>
+</div>
+
+<h3>Selecciona uno de tus productos para ofrecer en intercambio:</h3>
+
+<div *ngIf="misProductos$ | async as misProductos; else noProductos">
+  <div *ngFor="let item of misProductos" class="item-card">
+    <input type="radio" name="productoOfrecido" [value]="item.id" [(ngModel)]="productoOfrecidoId" />
+    <label>{{ item.title }} - {{ item.description }}</label>
+  </div>
+</div>
+
+<ng-template #noProductos>
+  <p>No tienes productos publicados para ofrecer.</p>
+</ng-template>
+
+<h3>Deja un comentario y valoración para el intercambio:</h3>
+
+<textarea [(ngModel)]="comentario" placeholder="Escribe tu comentario aquí..."></textarea>
+
+<label>Valoración:</label>
+<select [(ngModel)]="valoracion">
+  <option *ngFor="let val of [1,2,3,4,5]" [value]="val">{{ val }}</option>
+</select>
+
+<button (click)="enviarIntercambio()">Enviar Solicitud de Intercambio</button>

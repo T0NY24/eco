@@ -1,10 +1,12 @@
 import { Routes } from '@angular/router';
 import { HeroComponent } from './components/hero/hero';
-import { MarketplaceComponent } from './components/marketplace/marketplace';
+import { MarketplaceComponent } from './marketplace/marketplace';
 import { AuthComponent } from './auth/auth';
 import { CommunityComponent } from './community/community';
 import { PerfilComponent } from './perfil/perfil';
 import { ComentariosComponent } from './comentarios/comentarios';
+import { IntercambioComponent } from './intercambio/intercambio';
+import { OfertasComponent } from './ofertas/ofertas';
 
 
 export const routes: Routes = [
@@ -43,6 +45,8 @@ export const routes: Routes = [
   component: ComentariosComponent,
   title: 'Comentarios - EcoIntercambio'
   },
+  { path: 'intercambio/:id', component: IntercambioComponent },
+  { path: 'ofertas', component: OfertasComponent },
   {
     path: '**',
     redirectTo: ''

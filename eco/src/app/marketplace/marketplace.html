@@ -8,7 +8,6 @@
 <div class="publish-form" *ngIf="isPublishing">
   <h2>Publicar Nuevo Producto</h2>
   <input type="text" placeholder="Título" [(ngModel)]="newItem.title">
-  <input type="text" placeholder="Dueño" [(ngModel)]="newItem.owner">
   <textarea placeholder="Descripción" [(ngModel)]="newItem.description"></textarea>
   <input type="number" placeholder="EcoPuntos" [(ngModel)]="newItem.ecoPoints">
   <input type="text" placeholder="Ubicación" [(ngModel)]="newItem.location">
@@ -39,5 +38,7 @@
     <p>EcoPuntos: {{ item.ecoPoints }}</p>
     <p>Ubicación: {{ item.location }}</p>
     <p>Dueño: {{ item.owner }}</p>
+
+    <button (click)="irAIntercambio(item.id!)">Intercambiar</button>
   </div>
 </div>

@@ -1,17 +1,17 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { Firestore, collection, collectionData, addDoc, doc, getDoc } from '@angular/fire/firestore';
+import { Firestore, collection, collectionData, addDoc } from '@angular/fire/firestore';
 import { Observable } from 'rxjs';
-import {  } from '';
+import { Router } from '@angular/router';
+import { AuthService } from '../services/auth.service';
 
 export interface MarketplaceItem {
   id?: string;
   title: string;
   category: string;
   type: 'objeto' | 'servicio' | 'tiempo';
-  ownerUid: string;
-  ownerName: string;
+  owner: string; // Será el UID del usuario
   location: string;
   ecoPoints: number;
   description: string;
@@ -41,7 +41,11 @@ export class MarketplaceComponent implements OnInit {
     { id: 'musica', name: 'Música' },
   ];
 
-  constructor(private firestore: Firestore, public authService: AuthService) {
+  constructor(
+    private firestore: Firestore,
+    private authService: AuthService,
+    private router: Router
+  ) {
     const productsCollection = collection(this.firestore, 'productos');
     this.items$ = collectionData(productsCollection, { idField: 'id' }) as Observable<MarketplaceItem[]>;
   }
@@ -49,34 +53,32 @@ export class MarketplaceComponent implements OnInit {
   ngOnInit(): void {}
 
   async addItem() {
-    const user = this.authService.currentUser;
-    if (!user) {
-      alert('Debes iniciar sesión para publicar un producto.');
-      return;
-    }
-
-    const userDocRef = doc(this.firestore, 'usuarios', user.uid);
-    const userDocSnap = await getDoc(userDocRef);
-    const userData = userDocSnap.exists() ? userDocSnap.data() : null;
-
     if (!this.newItem.title || !this.newItem.description || !this.newItem.category || !this.newItem.type) {
-      alert('Por favor llena todos los campos obligatorios.');
+      alert('Por favor llena todos los campos.');
       return;
     }
 
-    const newProduct = {
-      ...this.newItem,
-      ecoPoints: this.newItem.ecoPoints || 0,
-      location: this.newItem.location || '',
-      createdAt: new Date(),
-      ownerUid: user.uid,
-      ownerName: userData?.name || 'Anónimo'
-    };
+    const currentUser = this.authService.currentUser;
+    if (!currentUser) {
+      alert('Debes iniciar sesión para publicar productos.');
+      return;
+    }
 
     const productsCollection = collection(this.firestore, 'productos');
-    await addDoc(productsCollection, newProduct);
+    await addDoc(productsCollection, {
+      ...this.newItem,
+      owner: currentUser.uid,  // Aquí guardamos el UID del usuario logueado
+      ecoPoints: this.newItem.ecoPoints || 0,
+      location: this.newItem.location || '',
+      createdAt: new Date()
+    });
 
     this.newItem = {};
     this.isPublishing = false;
+  }
+
+  // Método para ir al intercambio con el producto seleccionado
+  irAIntercambio(productoId: string) {
+    this.router.navigate(['/intercambio', productoId]);
   }
 }

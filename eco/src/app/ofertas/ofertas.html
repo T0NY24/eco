@@ -1,0 +1,21 @@
+<section class="ofertas-section">
+  <h2>Ofertas recibidas</h2>
+
+  <ng-container *ngIf="ofertas$ | async as ofertas">
+    <div *ngIf="ofertas.length > 0; else sinOfertas" class="ofertas-list">
+      <div *ngFor="let oferta of ofertas" class="oferta-card">
+        <h3>{{ oferta.productoDestinoTitulo }}</h3>
+        <p><strong>De:</strong> {{ oferta.usuarioSolicitanteEmail || 'Usuario anónimo' }}</p>
+        <p><strong>Estado:</strong> {{ oferta.estado }}</p>
+        <div class="acciones">
+          <button class="aceptar" (click)="aceptarOferta(oferta.id)">Aceptar</button>
+          <button class="rechazar" (click)="rechazarOferta(oferta.id)">Rechazar</button>
+        </div>
+      </div>
+    </div>
+
+    <ng-template #sinOfertas>
+      <p>No has recibido ofertas aún.</p>
+    </ng-template>
+  </ng-container>
+</section>

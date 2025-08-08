@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterOutlet } from '@angular/router';
+import { RouterOutlet, Router } from '@angular/router';
 import { HeaderComponent } from './components/header/header';
 import { FooterComponent } from './components/footer/footer';
 import { AuthService } from './services/auth.service';
@@ -13,6 +13,14 @@ import { AuthService } from './services/auth.service';
   styleUrls: ['./app.scss']
 })
 export class AppComponent {
-  constructor(public authService: AuthService) {}
+  constructor(
+    public authService: AuthService,
+    private router: Router // 👈 Añadido para navegación
+  ) {}
+
   title = 'EcoIntercambio';
+
+  goToOfertas() {
+    this.router.navigate(['/ofertas']); // 👈 Esto te lleva al componente Ofertas
+  }
 }

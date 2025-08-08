@@ -2,19 +2,32 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 
+import {
+  Firestore,
+  collection,
+  collectionData,
+  getCountFromServer,
+  query,
+  where,
+  orderBy,
+  limit,
+} from '@angular/fire/firestore';
+import { Observable, of } from 'rxjs';
+import { map, catchError } from 'rxjs/operators';
+
 @Component({
   selector: 'app-hero',
   standalone: true,
   imports: [CommonModule, RouterModule],
   templateUrl: './hero.html',
-  styleUrls: ['./hero.scss']
+  styleUrls: ['./hero.scss'],
 })
 export class HeroComponent implements OnInit {
   stats = {
-    totalUsers: '2,847',
-    activeExchanges: '1,234',
-    co2Saved: '15.7 toneladas',
-    itemsExchanged: '8,932'
+    totalUsers: '...',
+    activeExchanges: '...',
+    co2Saved: '---',       // Puedes agregar cálculo o mantener estático
+    itemsExchanged: '...',
   };
 
   features = [
@@ -22,89 +35,116 @@ export class HeroComponent implements OnInit {
       icon: 'recycle',
       title: 'Intercambio Circular',
       description: 'Intercambia objetos, servicios y habilidades de manera sostenible',
-      color: 'green'
+      color: 'green',
     },
     {
       icon: 'users',
       title: 'Comunidad Local',
       description: 'Conecta con vecinos de Zamora y fortalece lazos comunitarios',
-      color: 'blue'
+      color: 'blue',
     },
     {
       icon: 'leaf',
       title: 'Impacto Ambiental',
       description: 'Reduce residuos y contribuye a un planeta más sostenible',
-      color: 'purple'
+      color: 'purple',
     },
     {
       icon: 'award',
       title: 'Gamificación',
       description: 'Gana eco-puntos y reconocimientos por cada intercambio',
-      color: 'orange'
-    }
+      color: 'orange',
+    },
   ];
 
-  testimonials = [
-    {
-      name: 'María González',
-      role: 'Vecina de Zamora Centro',
-      content: 'He intercambiado más de 20 objetos este año. Es increíble cómo la comunidad se ha unido.',
-      avatar: '/assets/images/avatar-1.jpg',
-      ecoPoints: 1250
-    },
-    {
-      name: 'Carlos Mendoza',
-      role: 'Profesor y Músico',
-      content: 'Enseño guitarra a cambio de ayuda con jardinería. ¡Una experiencia fantástica!',
-      avatar: '/assets/images/avatar-2.jpg',
-      ecoPoints: 980
-    },
-    {
-      name: 'Ana Rodríguez',
-      role: 'Estudiante Universitaria',
-      content: 'Encontré todos mis libros de carrera intercambiando objetos que ya no necesitaba.',
-      avatar: '/assets/images/avatar-3.jpg',
-      ecoPoints: 750
+  testimonials$: Observable<any[]> = of([]);
+
+  recentActivities$: Observable<any[]> = of([]);
+
+  constructor(private firestore: Firestore) {}
+
+  async ngOnInit() {
+    await this.loadStats();
+    this.loadTestimonials();
+    this.loadRecentActivities();
+  }
+
+  async loadStats() {
+    try {
+      const usuariosCol = collection(this.firestore, 'usuarios');
+      const usuariosSnap = await getCountFromServer(usuariosCol);
+
+      const intercambiosCol = collection(this.firestore, 'intercambios');
+      const intercambiosPendientesQ = query(intercambiosCol, where('estado', '==', 'pendiente'));
+      const intercambiosSnap = await getCountFromServer(intercambiosPendientesQ);
+
+      const productosCol = collection(this.firestore, 'productos');
+      const productosSnap = await getCountFromServer(productosCol);
+
+      this.stats = {
+        totalUsers: usuariosSnap.data().count.toLocaleString(),
+        activeExchanges: intercambiosSnap.data().count.toLocaleString(),
+        co2Saved: '15.7 toneladas', // Ejemplo fijo o calcula aquí
+        itemsExchanged: productosSnap.data().count.toLocaleString(),
+      };
+    } catch (error) {
+      console.error('Error cargando estadísticas:', error);
+      this.stats = {
+        totalUsers: '---',
+        activeExchanges: '---',
+        co2Saved: '---',
+        itemsExchanged: '---',
+      };
     }
-  ];
+  }
 
-  recentActivities = [
-    {
-      type: 'exchange',
-      user: 'Pedro S.',
-      action: 'intercambió una bicicleta por clases de programación',
-      time: 'hace 2 horas',
-      impact: '3.2 kg CO₂ ahorrados'
-    },
-    {
-      type: 'service',
-      user: 'Laura M.',
-      action: 'ofreció reparación de electrodomésticos',
-      time: 'hace 4 horas',
-      impact: 'Productos salvados'
-    },
-    {
-      type: 'skill',
-      user: 'Diego R.',
-      action: 'compartió conocimientos de jardinería urbana',
-      time: 'hace 6 horas',
-      impact: 'Conocimiento compartido'
-    }
-  ];
+  loadTestimonials() {
+    const comentariosCol = collection(this.firestore, 'comentarios');
+    this.testimonials$ = collectionData(comentariosCol, { idField: 'id' }).pipe(
+      map((comments) =>
+        comments.map((c: any) => ({
+          name: c.name || 'Usuario Anónimo',
+          role: c.role || '',
+          content: c.text || c.comentario || '',
+          avatar: c.avatar || '/assets/images/avatar-default.jpg',
+          ecoPoints: c.ecoPoints || 0,
+        }))
+      ),
+      catchError((err) => {
+        console.error('Error cargando testimonios:', err);
+        return of([]);
+      })
+    );
+  }
 
-  constructor() { }
+  loadRecentActivities() {
+    const intercambiosCol = collection(this.firestore, 'intercambios');
+    const recentQuery = query(intercambiosCol, orderBy('creadoEn', 'desc'), limit(5));
 
-  ngOnInit(): void {
-    // Aquí puedes inicializar datos o hacer llamadas a APIs
+    this.recentActivities$ = collectionData(recentQuery, { idField: 'id' }).pipe(
+      map((items) =>
+        items.map((item: any) => ({
+          type: 'exchange',
+          user: item.usuarioSolicitanteEmail || 'Anónimo',
+          action: `solicitó intercambio: ${item.productoDestinoTitulo}`,
+          time: item.creadoEn?.toDate
+            ? item.creadoEn.toDate().toLocaleString()
+            : new Date().toLocaleString(),
+          impact: 'Pendiente',
+        }))
+      ),
+      catchError((err) => {
+        console.error('Error cargando actividades recientes:', err);
+        return of([]);
+      })
+    );
   }
 
   startExchanging(): void {
-    // Lógica para comenzar a intercambiar
-    console.log('Redirecting to marketplace...');
+    console.log('Redirigiendo al marketplace...');
   }
 
   learnMore(): void {
-    // Lógica para mostrar más información
-    console.log('Opening learn more section...');
+    console.log('Mostrando sección de más información...');
   }
 }
