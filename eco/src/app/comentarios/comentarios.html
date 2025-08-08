@@ -1,0 +1,36 @@
+<div class="comentarios-container">
+  <h2>¿Qué opinas de EcoIntercambio?</h2>
+
+  <div *ngIf="authService.currentUser; else noLogueado">
+    <textarea [(ngModel)]="comentario" placeholder="Escribe tu comentario..."></textarea>
+
+    <div class="estrellas">
+      <label *ngFor="let star of [1,2,3,4,5]">
+        <input
+          type="radio"
+          name="estrellas"
+          [value]="star"
+          [(ngModel)]="estrellas"
+        />
+        <span [class.filled]="star <= estrellas">★</span>
+      </label>
+    </div>
+
+    <button (click)="enviarComentario()">Enviar</button>
+  </div>
+
+  <ng-template #noLogueado>
+    <p>Inicia sesión para dejar tu comentario.</p>
+  </ng-template>
+
+  <div class="comentario" *ngFor="let c of comentarios$ | async">
+    <p class="nombre">{{ c.nombre }} - 
+      <span class="stars">
+        <ng-container *ngFor="let star of [1,2,3,4,5]">
+          <span [class.filled]="star <= c.estrellas">★</span>
+        </ng-container>
+      </span>
+    </p>
+    <p>{{ c.comentario }}</p>
+  </div>
+</div>

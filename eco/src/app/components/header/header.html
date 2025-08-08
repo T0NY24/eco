@@ -11,7 +11,11 @@
         <ul class="nav-list">
           <li><a routerLink="/">Inicio</a></li>
           <li><a routerLink="/marketplace">Marketplace</a></li>
-          <li><a routerLink="/comunidad">Comunidad</a></li> <!-- Botón Comunidad -->
+
+          <!-- Mostrar solo si está logueado -->
+          <li *ngIf="authService.currentUser"><a routerLink="/comunidad">Comunidad</a></li>
+          <li *ngIf="authService.currentUser"><a routerLink="/comentarios">Comentarios</a></li> <!-- ✅ Nuevo botón -->
+          <li *ngIf="authService.currentUser"><a routerLink="/perfil">Mi Perfil</a></li>
         </ul>
       </nav>
 

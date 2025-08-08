@@ -1,35 +1,28 @@
 import { Injectable } from '@angular/core';
-import { Auth, signInWithEmailAndPassword, signOut, onAuthStateChanged, User } from '@angular/fire/auth';
-import { Router } from '@angular/router';
-import { BehaviorSubject } from 'rxjs';
+import { Auth, authState, User } from '@angular/fire/auth';
+import { Firestore, doc, docData } from '@angular/fire/firestore';
+import { Observable, of } from 'rxjs';
 
-@Injectable({ providedIn: 'root' })
+@Injectable({
+  providedIn: 'root'
+})
 export class AuthService {
-  private userSubject = new BehaviorSubject<User | null>(null);
-  user$ = this.userSubject.asObservable();
+  currentUser: User | null = null;
 
-  constructor(private auth: Auth, private router: Router) {
-    onAuthStateChanged(this.auth, (user) => {
-      this.userSubject.next(user);
+  constructor(private auth: Auth, private firestore: Firestore) {
+    authState(this.auth).subscribe(user => {
+      this.currentUser = user;
     });
   }
 
-  async login(email: string, password: string) {
-    try {
-      await signInWithEmailAndPassword(this.auth, email, password);
-      this.router.navigate(['/']);
-    } catch (error) {
-      console.error('Error logging in:', error);
-      throw error;
-    }
+  getUserData(): Observable<any> {
+    if (!this.currentUser) return of(null);
+
+    const userRef = doc(this.firestore, `usuarios/${this.currentUser.uid}`);
+    return docData(userRef);
+  }
+    logout() {
+    return this.auth.signOut();
   }
 
-  async logout() {
-    await signOut(this.auth);
-    this.router.navigate(['/auth']);
-  }
-
-  get currentUser() {
-    return this.auth.currentUser;
-  }
 }

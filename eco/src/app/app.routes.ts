@@ -3,6 +3,9 @@ import { HeroComponent } from './components/hero/hero';
 import { MarketplaceComponent } from './components/marketplace/marketplace';
 import { AuthComponent } from './auth/auth';
 import { CommunityComponent } from './community/community';
+import { PerfilComponent } from './perfil/perfil';
+import { ComentariosComponent } from './comentarios/comentarios';
+
 
 export const routes: Routes = [
   {
@@ -21,7 +24,7 @@ export const routes: Routes = [
     title: 'Marketplace - EcoIntercambio'
   },
   {
-    path: 'auth',  // <-- Ruta para AuthComponent (Registro/Login)
+    path: 'auth',
     component: AuthComponent,
     title: 'Registro - EcoIntercambio'
   },
@@ -29,6 +32,16 @@ export const routes: Routes = [
     path: 'comunidad',
     component: CommunityComponent,
     title: 'Comunidad - EcoIntercambio'
+  },
+  {
+    path: 'perfil',
+    component: PerfilComponent,
+    title: 'Perfil - EcoIntercambio'
+  },
+  {
+  path: 'comentarios',
+  component: ComentariosComponent,
+  title: 'Comentarios - EcoIntercambio'
   },
   {
     path: '**',

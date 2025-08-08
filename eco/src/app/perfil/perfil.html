@@ -1,0 +1,13 @@
+<div class="perfil-container" *ngIf="userData">
+  <h2>👤 Tu perfil</h2>
+  <div class="info">
+    <p><strong>Nombre:</strong> {{ userData.name }}</p>
+    <p><strong>Edad:</strong> {{ userData.age }}</p>
+    <p><strong>Ocupación:</strong> {{ userData.occupation }}</p>
+    <p><strong>Email:</strong> {{ userData.email }}</p>
+  </div>
+</div>
+
+<div *ngIf="!userData">
+  <p>Cargando perfil...</p>
+</div>
