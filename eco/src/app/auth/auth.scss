@@ -1,43 +1,114 @@
 .auth-container {
-  max-width: 400px;
-  margin: auto;
-  padding: 20px;
-  border: 1px solid #ccc;
-  border-radius: 10px;
+  max-width: 450px;
+  margin: 4rem auto;
+  padding: 2.5rem;
+  background: #f1f8e9;
+  border-radius: 16px;
+  box-shadow: 0 10px 32px rgba(0, 0, 0, 0.08);
+  border: 2px solid #c8e6c9;
+  animation: fadeIn 0.4s ease-in-out;
 
-  h2 {
+  .auth-header {
     text-align: center;
+    margin-bottom: 2rem;
+
+    h2 {
+      font-size: 1.8rem;
+      font-weight: 700;
+      color: #2e7d32;
+      margin-bottom: 0.5rem;
+    }
+
+    .auth-subtitle {
+      font-size: 0.95rem;
+      color: #4e4e4e;
+    }
   }
 
   form {
     display: flex;
     flex-direction: column;
+    gap: 1.2rem;
 
-    label {
-      margin-top: 10px;
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 0.4rem;
+
+      label {
+        font-weight: 600;
+        color: #33691e;
+        font-size: 0.95rem;
+      }
+
+      input {
+        padding: 0.8rem 1rem;
+        font-size: 1rem;
+        border-radius: 8px;
+        border: 1px solid #c5e1a5;
+        background: #fff;
+        transition: border 0.3s ease, box-shadow 0.3s ease;
+
+        &:focus {
+          border-color: #81c784;
+          box-shadow: 0 0 0 3px rgba(129, 199, 132, 0.3);
+          outline: none;
+        }
+      }
     }
 
-    input {
-      padding: 8px;
-      margin-top: 5px;
-    }
+    .btn-submit {
+      background-color: #43a047;
+      color: #fff;
+      font-weight: 600;
+      padding: 0.9rem 1.2rem;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: background 0.3s ease, transform 0.2s ease;
 
-    button {
-      margin-top: 20px;
-      padding: 10px;
+      &:hover {
+        background-color: #2e7d32;
+        transform: translateY(-2px);
+      }
     }
 
     .error {
-      color: red;
-      margin-top: 10px;
+      background: #ffebee;
+      color: #c62828;
+      padding: 0.6rem 1rem;
+      border-radius: 8px;
+      font-size: 0.9rem;
+      border: 1px solid #ef9a9a;
     }
   }
+
   .toggle-button {
-  margin-top: 20px;
-  background: none;
-  border: none;
-  color: #007bff;
-  cursor: pointer;
-  text-decoration: underline;
+    display: block;
+    margin: 1.5rem auto 0;
+    background: transparent;
+    border: none;
+    color: #388e3c;
+    font-weight: 600;
+    font-size: 0.95rem;
+    cursor: pointer;
+    transition: color 0.3s ease;
+
+    &:hover {
+      text-decoration: underline;
+      color: #2e7d32;
+    }
+  }
 }
+
+/* Animación de entrada */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
