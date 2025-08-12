@@ -31,13 +31,7 @@ export class HeroComponent implements OnInit {
   };
 
   features = [
-    {
-      icon: 'recycle',
-      title: 'Intercambio Circular',
-      description: 'Intercambia objetos, servicios y habilidades de manera sostenible',
-      color: 'green',
-    },
-    {
+     {
       icon: 'users',
       title: 'Comunidad Local',
       description: 'Conecta con vecinos de Zamora y fortalece lazos comunitarios',

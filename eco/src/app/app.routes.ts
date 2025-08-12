@@ -7,6 +7,7 @@ import { PerfilComponent } from './perfil/perfil';
 import { ComentariosComponent } from './comentarios/comentarios';
 import { IntercambioComponent } from './intercambio/intercambio';
 import { OfertasComponent } from './ofertas/ofertas';
+import { InfoComponent } from './info/info';
 
 
 export const routes: Routes = [
@@ -44,6 +45,11 @@ export const routes: Routes = [
   path: 'comentarios',
   component: ComentariosComponent,
   title: 'Comentarios - EcoIntercambio'
+  },
+    {
+    path: 'info',
+    component: InfoComponent, // ⬅️ Nueva ruta
+    title: 'Información - EcoIntercambio'
   },
   { path: 'intercambio/:id', component: IntercambioComponent },
   { path: 'ofertas', component: OfertasComponent },

@@ -1,0 +1,31 @@
+.footer {
+  background: linear-gradient(135deg, #4caf50, #087f23);
+  padding: 0.1rem 0;  // menos padding vertical
+  text-align: center;
+  box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.1); // 
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  color: #fff;
+  font-size: 0.5rem;  //
+
+  .footer-content {
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    user-select: none;
+  }
+
+  .author-name {
+    font-weight: 700;
+    color: #d4f6cc;
+    text-shadow: 0 0 4px rgba(212, 246, 204, 0.8);
+    transition: color 0.3s ease, text-shadow 0.3s ease;
+    cursor: default;
+
+    &:hover {
+      color: #ffffff;
+      text-shadow: 0 0 10px #c8ff80;
+    }
+  }
+}
