@@ -1,36 +1,36 @@
 <header class="header">
   <div class="container">
     <div class="header-content">
-      <!-- Logo -->
-      <div class="logo" routerLink="/">
-        <h1 class="logo-text">EcoIntercambio</h1>
-      </div>
 
-      <!-- Navegación -->
+      <!-- Navegación escritorio -->
       <nav class="desktop-nav">
         <ul class="nav-list">
           <li><a routerLink="/">Inicio</a></li>
           <li><a routerLink="/marketplace">Marketplace</a></li>
-
-          <!-- Mostrar solo si está logueado -->
-          <li *ngIf="authService.currentUser"><a routerLink="/comunidad">Comunidad</a></li>
-          <li *ngIf="authService.currentUser"><a routerLink="/comentarios">Comentarios</a></li> <!-- ✅ Nuevo botón -->
-          <li *ngIf="authService.currentUser"><a routerLink="/perfil">Mi Perfil</a></li>
+          <li *ngIf="!loading && userName"><a routerLink="/comunidad">Comunidad</a></li>
+          <li *ngIf="!loading && userName"><a routerLink="/comentarios">Comentarios</a></li>
+          <li *ngIf="!loading && userName"><a routerLink="/perfil">Mi Perfil</a></li>
         </ul>
       </nav>
 
-      <!-- User Section -->
+      <!-- Sección Usuario -->
       <div class="user-section">
-        <ng-container *ngIf="authService.currentUser; else guestLinks">
+        <ng-container *ngIf="loading">
+          <span class="loader"></span> Cargando...
+        </ng-container>
+
+        <ng-container *ngIf="!loading && userName; else guestLinks">
           <span class="welcome-text">
-            Bienvenido, {{ authService.currentUser.email }}
+            Bienvenido, {{ userName }}
           </span>
           <button (click)="logout()" class="btn btn-logout">Cerrar Sesión</button>
         </ng-container>
+
         <ng-template #guestLinks>
           <a routerLink="/auth" class="btn btn-login">Iniciar Sesión</a>
         </ng-template>
       </div>
+
     </div>
   </div>
 </header>

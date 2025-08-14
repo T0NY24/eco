@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Firestore, collection, collectionData, addDoc } from '@angular/fire/firestore';
-import { Observable } from 'rxjs';
+import { Observable, firstValueFrom } from 'rxjs';
 import { Router } from '@angular/router';
 import { AuthService } from '../services/auth.service';
 
@@ -11,7 +11,7 @@ export interface MarketplaceItem {
   title: string;
   category: string;
   type: 'objeto' | 'servicio' | 'tiempo';
-  owner: string; // Será el UID del usuario
+  owner: string; // Nombre del usuario
   location: string;
   ecoPoints: number;
   description: string;
@@ -28,7 +28,8 @@ export interface MarketplaceItem {
 export class MarketplaceComponent implements OnInit {
   items$: Observable<MarketplaceItem[]>;
   isPublishing: boolean = false;
-
+  loading: boolean = true;
+  skeletonArray = Array(6); // 6 tarjetas simuladas
   newItem: Partial<MarketplaceItem> = {};
 
   categories = [
@@ -50,7 +51,12 @@ export class MarketplaceComponent implements OnInit {
     this.items$ = collectionData(productsCollection, { idField: 'id' }) as Observable<MarketplaceItem[]>;
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    // Simular carga de productos
+    setTimeout(() => {
+      this.loading = false;
+    }, 2000);
+  }
 
   async addItem() {
     if (!this.newItem.title || !this.newItem.description || !this.newItem.category || !this.newItem.type) {
@@ -58,16 +64,22 @@ export class MarketplaceComponent implements OnInit {
       return;
     }
 
-    const currentUser = this.authService.currentUser;
-    if (!currentUser) {
+    if (!this.authService.currentUser) {
       alert('Debes iniciar sesión para publicar productos.');
+      return;
+    }
+
+    // Obtener datos completos del usuario (nombre)
+    const userData: any = await firstValueFrom(this.authService.getUserData());
+    if (!userData) {
+      alert('No se pudo obtener información del usuario.');
       return;
     }
 
     const productsCollection = collection(this.firestore, 'productos');
     await addDoc(productsCollection, {
       ...this.newItem,
-      owner: currentUser.uid,  // Aquí guardamos el UID del usuario logueado
+      owner: userData.name, // <-- Guardamos nombre en lugar de UID
       ecoPoints: this.newItem.ecoPoints || 0,
       location: this.newItem.location || '',
       createdAt: new Date()

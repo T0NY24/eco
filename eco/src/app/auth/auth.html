@@ -1,5 +1,4 @@
 <div class="auth-container">
-  <!-- Título dinámico -->
   <header class="auth-header">
     <h2>{{ isLoginMode ? 'Iniciar Sesión' : 'Registro' }}</h2>
     <p class="auth-subtitle">
@@ -9,88 +8,53 @@
     </p>
   </header>
 
+  <!-- Loader / Skeleton -->
+  <div *ngIf="loading" class="loader-container">
+    <span class="loader"></span>
+    <div class="skeleton-form">
+      <div class="skeleton-line" *ngFor="let i of [1,2,3,4,5]"></div>
+    </div>
+  </div>
+
   <!-- Formulario -->
-  <form (ngSubmit)="onSubmit()" novalidate>
-    <!-- Campo Email -->
+  <form *ngIf="!loading" (ngSubmit)="onSubmit()" novalidate>
     <div class="form-group">
       <label for="email">📧 Email</label>
-      <input 
-        id="email" 
-        type="email" 
-        [(ngModel)]="email" 
-        name="email" 
-        placeholder="Introduce tu email" 
-        required
-      >
+      <input id="email" type="email" [(ngModel)]="email" name="email" placeholder="Introduce tu email" required>
     </div>
 
-    <!-- Campo Contraseña -->
     <div class="form-group">
       <label for="password">🔑 Contraseña</label>
-      <input 
-        id="password" 
-        type="password" 
-        [(ngModel)]="password" 
-        name="password" 
-        placeholder="Introduce tu contraseña" 
-        required
-      >
+      <input id="password" type="password" [(ngModel)]="password" name="password" placeholder="Introduce tu contraseña" required>
     </div>
 
-    <!-- Campos adicionales solo para registro -->
     <div *ngIf="!isLoginMode">
       <div class="form-group">
         <label for="name">👤 Nombre Completo</label>
-        <input 
-          id="name" 
-          type="text" 
-          [(ngModel)]="name" 
-          name="name" 
-          placeholder="Tu nombre completo" 
-          required
-        >
+        <input id="name" type="text" [(ngModel)]="name" name="name" placeholder="Tu nombre completo" required>
       </div>
 
       <div class="form-group">
         <label for="age">🎂 Edad</label>
-        <input 
-          id="age" 
-          type="number" 
-          [(ngModel)]="age" 
-          name="age" 
-          placeholder="Tu edad" 
-          required
-        >
+        <input id="age" type="number" [(ngModel)]="age" name="age" placeholder="Tu edad" required>
       </div>
 
       <div class="form-group">
         <label for="occupation">💼 Ocupación</label>
-        <input 
-          id="occupation" 
-          type="text" 
-          [(ngModel)]="occupation" 
-          name="occupation" 
-          placeholder="Tu ocupación" 
-          required
-        >
+        <input id="occupation" type="text" [(ngModel)]="occupation" name="occupation" placeholder="Tu ocupación" required>
       </div>
     </div>
 
-    <!-- Botón enviar -->
     <button type="submit" class="btn-submit">
       {{ isLoginMode ? 'Iniciar Sesión' : 'Registrarse' }}
     </button>
 
-    <!-- Mensaje de error -->
     <div class="error" *ngIf="errorMessage">
       {{ errorMessage }}
     </div>
   </form>
 
-  <!-- Botón alternar modo -->
   <button class="toggle-button" (click)="toggleMode()">
-    {{ isLoginMode 
-      ? '¿No tienes cuenta? Regístrate' 
-      : '¿Ya tienes cuenta? Inicia Sesión' }}
+    {{ isLoginMode ? '¿No tienes cuenta? Regístrate' : '¿Ya tienes cuenta? Inicia Sesión' }}
   </button>
 </div>

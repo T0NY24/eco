@@ -1,3 +1,4 @@
+
 <div class="publish-invite" *ngIf="!isPublishing">
   <h2>¿Tienes un producto, servicio o habilidad para ofrecer?</h2>
   <p>Publica y gana eco-puntos intercambiando con la comunidad. ¡Ayuda al planeta y recibe lo que necesitas!</p>
@@ -27,6 +28,23 @@
   <button (click)="addItem()">Publicar</button>
   <button (click)="isPublishing = false">Cancelar</button>
 </div>
+<!-- Loader -->
+<div *ngIf="loading" class="loader-container">
+  <span class="loader"></span>
+</div>
+
+<!-- Skeleton Cards -->
+<div *ngIf="loading" class="marketplace-items">
+  <div class="item-card skeleton" *ngFor="let s of skeletonArray">
+    <div class="skeleton-title"></div>
+    <div class="skeleton-text"></div>
+    <div class="skeleton-text short"></div>
+    <div class="skeleton-text"></div>
+    <div class="skeleton-text short"></div>
+    <div class="skeleton-button"></div>
+  </div>
+</div>
+
 
 <!-- LISTADO DE PRODUCTOS -->
 <div class="marketplace-items">

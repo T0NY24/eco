@@ -184,4 +184,25 @@
       }
     }
   }
+/* Loader */
+
+
+  /* Skeleton Styles */
+  .skeleton {
+    background: #f0f0f0;
+    border-radius: 8px;
+    animation: shimmer 1.6s infinite linear;
+  }
+
+  .skeleton-line {
+    height: 20px;
+    margin: 0.5rem 0;
+    border-radius: 6px;
+  }
+
+  @keyframes shimmer {
+    0% { background-position: -200% 0; }
+    100% { background-position: 200% 0; }
+  }
 }
+

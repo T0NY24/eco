@@ -26,7 +26,8 @@ export class CommunityComponent implements OnInit {
   replyMessage: string = '';
   replyingToPostId: string | null = null;
   currentUser: string = '';
-  publishMode: boolean = false;  // <-- CORREGIDO: agregamos la variable publishMode
+  publishMode: boolean = false;
+  loading: boolean = true;
 
   constructor(private firestore: Firestore, private auth: Auth) {}
 
@@ -36,6 +37,11 @@ export class CommunityComponent implements OnInit {
 
     const postsRef = collection(this.firestore, 'comunidad');
     this.posts$ = collectionData(postsRef, { idField: 'id' }) as Observable<CommunityPost[]>;
+
+    // Simulamos carga lenta
+    setTimeout(() => {
+      this.loading = false;
+    }, 1500);
   }
 
   async publishPost() {
@@ -46,7 +52,7 @@ export class CommunityComponent implements OnInit {
       message: this.newPost,
       user: this.currentUser,
       responses: [],
-      createdAt: Timestamp.now()  // <-- CORREGIDO: usamos Timestamp.now()
+      createdAt: Timestamp.now()
     });
 
     this.newPost = '';
@@ -63,7 +69,6 @@ export class CommunityComponent implements OnInit {
 
     const postRef = doc(this.firestore, 'comunidad', post.id!);
     const updatedResponses = [...post.responses, { user: this.currentUser, message: this.replyMessage }];
-
     await updateDoc(postRef, { responses: updatedResponses });
 
     this.replyingToPostId = null;

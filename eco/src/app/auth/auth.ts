@@ -21,13 +21,21 @@ export class AuthComponent {
   errorMessage: string = '';
   isLoginMode: boolean = true;
 
+  loading: boolean = false; 
+
   constructor(private auth: Auth, private firestore: Firestore, private router: Router) {}
 
   async onSubmit() {
-    if (this.isLoginMode) {
-      await this.login();
-    } else {
-      await this.register();
+    this.loading = true;
+    this.errorMessage = '';
+    try {
+      if (this.isLoginMode) {
+        await this.login();
+      } else {
+        await this.register();
+      }
+    } finally {
+      this.loading = false;
     }
   }
 
@@ -36,7 +44,6 @@ export class AuthComponent {
       const userCredential = await createUserWithEmailAndPassword(this.auth, this.email, this.password);
       const user = userCredential.user;
 
-      // Guardar en Firestore
       const userRef = doc(this.firestore, `usuarios/${user.uid}`);
       await setDoc(userRef, {
         uid: user.uid,
@@ -47,7 +54,6 @@ export class AuthComponent {
         createdAt: new Date()
       });
 
-      console.log('Usuario registrado y guardado en Firestore');
       this.router.navigate(['/marketplace']);
     } catch (error: any) {
       console.error('Registration error:', error);
@@ -58,7 +64,6 @@ export class AuthComponent {
   async login() {
     try {
       const userCredential = await signInWithEmailAndPassword(this.auth, this.email, this.password);
-      console.log('User logged in:', userCredential.user);
       this.router.navigate(['/marketplace']);
     } catch (error: any) {
       console.error('Login error:', error);

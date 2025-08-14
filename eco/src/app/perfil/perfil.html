@@ -1,4 +1,4 @@
-<div class="perfil-container" *ngIf="userData">
+<div class="perfil-container" *ngIf="userData; else loadingTemplate">
   <h2>👤 Tu perfil</h2>
   <div class="info">
     <p><strong>Nombre:</strong> {{ userData.name }}</p>
@@ -8,6 +8,21 @@
   </div>
 </div>
 
-<div *ngIf="!userData">
-  <p>Cargando perfil...</p>
-</div>
+<!-- Loader + Skeleton -->
+<ng-template #loadingTemplate>
+  <div class="loading-wrapper">
+    <!-- Loader animado -->
+    <span class="loader"></span>
+
+    <!-- Skeleton de perfil -->
+    <div class="perfil-container skeleton">
+      <h2 class="skeleton-text"></h2>
+      <div class="info">
+        <p class="skeleton-line"></p>
+        <p class="skeleton-line"></p>
+        <p class="skeleton-line"></p>
+        <p class="skeleton-line"></p>
+      </div>
+    </div>
+  </div>
+</ng-template>
